@@ -1,0 +1,112 @@
+security:gitleaks:
+  stage: security
+  image:
+    name: "${REGISTRY_URL}/paas/zricethezav/gitleaks:${GITLEAKS_VERSION}"
+    entrypoint: [""]
+  before_script:
+    - gitleaks version
+  script:
+    - gitleaks dir --follow-symlinks -v -f junit -r gitleaks-report.xml
+  artifacts:
+    paths:
+      - gitleaks-report.xml
+    reports:
+      junit: gitleaks-report.xml
+
+
+lint:dockerfile:hadolint:
+  stage: lint
+  image: "${REGISTRY_URL}/paas/hadolint/hadolint:${HADOLINT_VERSION}"
+  before_script:
+    - hadolint --version
+  script:
+    - hadolint Dockerfile
+
+
+lint:dockerfile:trivy:
+  stage: lint
+  image: "${REGISTRY_URL}/paas/aquasec/trivy:${TRIVY_VERSION}"
+  before_script:
+    - trivy --version
+    # Downloading template format from Github
+    - wget https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/junit.tpl -O junit.tpl
+  script:
+    # Fail on specified vulnerabilities
+    - trivy config Dockerfile --exit-code 1 --severity "$TRIVY_SEVERITY" --format template --template "@junit.tpl" -o junit-report.xml
+  artifacts:
+    paths:
+      - junit-report.xml
+    reports:
+      junit: junit-report.xml
+
+
+lint:helm:
+  stage: lint
+  image: "${REGISTRY_URL}/paas/alpine/helm:$HELM_VERSION"
+  before_script:
+    - helm version
+  script:
+    - helm lint chart
+
+
+build:docker:buildah:
+  stage: build
+  image: "${REGISTRY_URL}/paas/buildah/stable:${BUILDAH_VERSION}"
+  before_script:
+    - buildah version
+  script:
+    - buildah --storage-driver vfs bud -t "${IMAGE_NAME}:${CI_COMMIT_SHORT_SHA}" .
+    - buildah --storage-driver vfs push -f v2s2 "${IMAGE_NAME}:${CI_COMMIT_SHORT_SHA}"
+
+
+cve:docker:trivy:
+  stage: cve
+  image:
+    name: "${REGISTRY_URL}/paas/aquasec/trivy:${TRIVY_VERSION}"
+    entrypoint: [""]
+  variables:
+    GIT_STRATEGY: none
+  before_script:
+      - trivy --version
+
+      # Downloading template format from Github
+      - wget https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/junit.tpl -O junit.tpl
+
+      # Update vuln db
+      - trivy clean --scan-cache
+      - trivy --cache-dir .trivycache/ image --download-db-only --no-progress
+  script:
+      # Fail on specified vulnerabilities
+      - |
+        trivy image \
+          --exit-code 1 \
+          --severity "$TRIVY_SEVERITY" \
+          --no-progress \
+          --scanners vuln \
+          --format template \
+          --template "@junit.tpl" \
+          -o junit-report.xml \
+          "${IMAGE_NAME}:${CI_COMMIT_SHORT_SHA}"
+  cache:
+      paths:
+      - .trivycache/
+  artifacts:
+      paths:
+          - junit-report.xml
+      reports:
+          junit: junit-report.xml
+  rules:
+    - if: '$IGNORE_TRIVY_CVE=="true"'
+      allow_failure: true
+    - when: on_success
+
+
+post:docker:clean:
+  stage: .post
+  image: "${REGISTRY_URL}/paas/myifeng/quay.io_skopeo_stable:${SKOPEO_VERSION}"
+  before_script:
+    - skopeo -v
+  script:
+    - skopeo delete "docker://${IMAGE_NAME}:${CI_COMMIT_SHORT_SHA}"
+  allow_failure: true
+  when: on_failure

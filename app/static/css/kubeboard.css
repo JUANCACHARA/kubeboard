@@ -1,0 +1,175 @@
+/*
+ * COMMON STYLES
+ * Used to redefine common attributes (such as links, title, etc.)
+ */
+html, body {
+  height: 100%;
+}
+
+#root {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+h1 {
+  font-size: 3.7em;
+  font-weight: 700;
+  margin-bottom: 42px;
+}
+
+h2 {
+  font-size: 20px;
+  font-weight: 900;
+  margin-bottom: 16px;
+  text-transform: uppercase;
+}
+
+h3 {
+  font-weight: 600;
+  font-size: .9em;
+}
+
+a {
+  color: inherit;
+  text-decoration: inherit;
+  cursor: pointer;
+}
+
+.hidden {
+  display: none;
+}
+
+footer {
+  opacity: .5;
+  width: 100%;
+  font-size: .8rem;
+
+  position: absolute;
+  bottom: 0;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+footer span {
+  margin-bottom: 10px;
+}
+
+footer .fa-heart {
+  font-size: 0.9rem;
+  padding: 0 2px 0 2px
+}
+
+footer a {
+  font-weight: 600;
+}
+
+/*
+ * APP-SPECIFIC STYLES
+ * Used to redefine app-specific tags (app grid, app item, etc.)
+ */
+
+header {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+#logo {
+  width: 100px;
+}
+
+#app_grid {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  align-content: flex-start;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.app_item {
+  display: flex;
+  flex-wrap: nowrap;
+  flex-direction: row;
+  align-items: center;
+
+  width: 300px;
+  gap: 8px;
+
+  padding: 4px 4px 8px 4px;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+
+  border-radius: 4px;
+  transition: all .1s;
+}
+
+.app_item:hover,
+.app_item:active,
+.app_item:focus {
+  background-color: rgba(0, 0, 0, .4);
+}
+
+.app_item_icon {
+  width: 35px;
+  height: 35px;
+  font-size: 35px;
+}
+
+.app_item_details h3 {
+  margin: 0;
+  margin-bottom: -4px;
+  padding-top: 4px;
+}
+
+.app_item_details span {
+  font-size: .7em;
+  font-weight: 400;
+}
+
+#menu {
+  display: flex;
+  justify-content: flex-start;
+  align-items: baseline;
+  gap: 22px;
+}
+
+#autoRefreshCheckbox {
+  margin-right: 2px;
+}
+
+#controls {
+  display: inline-block;
+  padding: 4px;
+  position: absolute;
+  top: 9px;
+  right: 9px;
+
+  display: flex;
+  gap: 10px;
+}
+
+#controls .fa-check {
+  color: green;
+  font-size: 1.5rem;
+  color: green;
+}
+
+#refresh {
+  border-radius: 999px;
+  font-size: 1.5rem;
+  opacity: 0.3;
+  background-color: rgba(0, 0, 0, .05);
+
+  transition: all .1s;
+}
+
+#refresh:hover,
+#refresh:active,
+#refresh:active {
+  background-color: rgba(6, 82, 221, .1);
+  opacity: 0.5;
+}

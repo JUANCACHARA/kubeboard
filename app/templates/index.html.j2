@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="fr">
+
+<head>
+  <meta charset="utf-8">
+  <title>{{ title }}</title>
+  <link rel="icon" type="image/gif" href="{{ url_for('static', filename='img/favicon.gif') }}" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" type= "text/css" href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap">
+  <link rel="stylesheet" type= "text/css" href="{{ url_for('static', filename='css/modern-normalize.min.css') }}">
+  <link rel="stylesheet" type= "text/css" href="{{ url_for('static', filename='css/fork-awesome.min.css') }}">
+  <link rel="stylesheet" type= "text/css" href="{{ url_for('static', filename='css/kubeboard.css') }}">
+  <link rel="stylesheet" type= "text/css" href="{{ url_for('static', filename='css/kubeboard-theme.css') }}">
+</head>
+
+<body>
+  <div id="root">
+    <header>
+      <img src="{{ url_for('static', filename='img/logo.webp') }}" alt="Logo de {{ title }}" id="logo" />
+      <h1>{{ title }}</h1>
+    </header>
+    <section>
+      <div id="menu">
+        <h2>Applications</h2>
+        <div>
+          <input type="checkbox" id="autoRefreshCheckbox" name="autoRefresh" value="true" />
+          <label for="autoRefreshCheckbox">Automatic refresh</label>
+        </div>
+      </div>
+      <div id="app_grid"></div>
+    </section>
+  </div>
+
+  <div id="controls">
+    <i class="fa fa-check hidden"></i>
+    <a id="refresh">
+      <i class="fa fa-refresh"></i>
+    </a>
+  </div>
+
+  <footer>
+    <span>Made with <i class="fa fa-heart"></i> by <a target="_blank" href="https://hugo.chupin.xyz">Hugo
+        CHUPIN</a></span>
+  </footer>
+
+  <script defer type="text/javascript" src="{{ url_for('static', filename='js/kubeboard.js') }}"></script>
+</body>
+
+</html>

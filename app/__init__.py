@@ -7,7 +7,7 @@ app.config.from_prefixed_env()
 
 @app.route("/", methods=["GET"])
 def index():
-    return render_template("index.html.j2", title=app.config["APP_TITLE"])
+    return render_template("index.html.j2")
 
 
 @app.route("/config", methods=["GET"])

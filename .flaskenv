@@ -5,7 +5,6 @@ FLASK_RUN_PORT=5000
 
 FLASK_K8S_ANNOTATION_PREFIX="kubeboard.xyz"
 
-FLASK_APP_TITLE="KubeBoard"
 FLASK_APP_DEFAULT_ICON="fa-external-link"  # See https://forkaweso.me/Fork-Awesome/icons/
 FLASK_APP_HIDE_BY_DEFAULT="false"
 

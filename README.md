@@ -28,7 +28,6 @@ To facilitate the integration of **KubeBoard** in any project, some theming elem
 
 | Environment variable | Default value | Description |
 |---|---|---|
-| **FLASK_APP_TITLE** | `KubeBoard` | The main title of the homepage |
 | **FLASK_THEME_PRIMARY_COLOR** | `#0075ff` | The primary color (CSS `rgb()`, `rgba()`, `#hex`) |
 | **FLASK_THEME_SECONDARY_COLOR** | `#AABBC3` | The secondary color (CSS `rgb()`, `rgba()`, `#hex`) |
 | **FLASK_THEME_BACKGROUND_URL** | `../img/earth-background.jpg` | The background image to use (CSS relative path or URL) |
@@ -51,7 +50,6 @@ You can set any of the previously referenced environment variables mentioned abo
 ```yaml
 # kubeboard.values.yaml
 env:
-  FLASK_APP_TITLE: "KubeBoard"
   FLASK_APP_HIDE_BY_DEFAULT: "false"
   FLASK_THEME_PRIMARY_COLOR: "#0075ff"
   FLASK_THEME_SECONDARY_COLOR: "#AABBC3"
@@ -71,13 +69,13 @@ helm upgrade --install -n <namespace> -f kubeboard.values.yaml kubeboard ./chart
 To run **KubeBoard** locally, we recommend using _[Docker](https://www.docker.com/)_ or _[Podman](https://podman.io/)_. Note that you'll also need a valid and accessible _Kubernetes_ cluster, as you'll need to mount your local `kubeconfig` file in the appropriate container directory:
 
 ```bash
-docker run -v $HOME/.kube:/app/.kube -p 5000:5000 ghcr.io/bythehugo/kubeboard/kubeboard:1.0.0
+docker run -v $HOME/.kube:/app/.kube -p 5000:5000 ghcr.io/bythehugo/kubeboard:1.0.1
 ```
 
 You can set any of the previously referenced environment variables mentioned above by using the `-e`/`--env` option:
 
 ```bash
-docker run -v $HOME/.kube:/app/.kube -e FLASK_APP_TITLE="CustomTitle" -p 5000:5000 ghcr.io/bythehugo/kubeboard/kubeboard:1.0.0
+docker run -v $HOME/.kube:/app/.kube -e FLASK_APP_HIDE_BY_DEFAULT="true" -p 5000:5000 ghcr.io/bythehugo/kubeboard:1.0.1
 ```
 
 <p align="right">(<a href="#kubeboard">back to top</a>)</p>

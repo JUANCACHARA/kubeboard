@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="utf-8">
-  <title>{{ title }}</title>
+  <title>My KubeBoard</title>
   <link rel="icon" type="image/gif" href="{{ url_for('static', filename='img/favicon.gif') }}" />
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -18,8 +18,8 @@
 <body>
   <div id="root">
     <header>
-      <img src="{{ url_for('static', filename='img/logo.webp') }}" alt="Logo de {{ title }}" id="logo" />
-      <h1>{{ title }}</h1>
+      <img src="{{ url_for('static', filename='img/logo.png') }}" alt="Logo de KubeBoard" id="logo" />
+      <h1 class="hidden">KubeBoard</h1>
     </header>
     <section>
       <div id="menu">

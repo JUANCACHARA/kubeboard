@@ -1,27 +1,42 @@
 const HTTP_ENDPOINT = "/config";
-const AUTO_REFRESH_INTERVAL = 2000;
+const AUTO_REFRESH_INTERVAL = 5000;
 const VALIDATION_CHECK_DURATION = 1500;
 
 let autoRefreshIntervalRef = null;
 
 document.addEventListener('DOMContentLoaded', async () => {
-  refresh_config();
+  refresh_config().then(() => {
+    _update_last_refresh();
+  });
 
+  // ===
   // Setup eventListeners
+  // ===
   // > refresh button
   document.querySelector('#refresh').addEventListener("click", function () {
-    refresh_config();
-    _display_action_validation()
+    refresh_config().then(() => {
+      _display_action_validation()
+      _update_last_refresh();
+    })
   });
+
   // > automatic refresh toggle
-  document.querySelector('#autoRefreshCheckbox').addEventListener("change", function (event) {
-    if (event.currentTarget.checked) {
-      refresh_config();
+  document.querySelector('#automaticRefresh').addEventListener("click", function () {
+    if (!autoRefreshIntervalRef) {
       autoRefreshIntervalRef = setInterval(() => {
-        refresh_config();
+        refresh_config().then(() => {
+          _update_last_refresh();
+        });
       }, AUTO_REFRESH_INTERVAL);
+      _toggle_button("#automaticRefresh", true);
+
     } else {
-      if (autoRefreshIntervalRef) clearInterval(autoRefreshIntervalRef);
+      if (autoRefreshIntervalRef) {
+        clearInterval(autoRefreshIntervalRef);
+        autoRefreshIntervalRef = null;
+      }
+      _toggle_button("#automaticRefresh", false);
+
     }
   });
 }, false);
@@ -38,7 +53,7 @@ refresh_config = async () => {
     const _ingress_html = `
       <a class="app_item" href="http://${ingresses[i].url}" target="_blank" rel="noreferrer">
           <div class="app_item_icon">
-            <i class="fa ${ingresses[i].icon}" aria-hidden="true"></i>
+            <span class="mdi ${ingresses[i].icon}" aria-hidden="true"></span>
           </div>
           <div class="app_item_details">
             <h3>${ingresses[i].name}</h3>
@@ -48,11 +63,17 @@ refresh_config = async () => {
     `
     document.querySelector('#app_grid').insertAdjacentHTML('beforeend', _ingress_html);
   }
+
+  return;
+}
+
+_update_last_refresh = () => {
+  document.querySelector('#lastRefresh').innerHTML = `<strong>Last refresh:</strong> ${new Date().toUTCString()}`;
 }
 
 _fetch_ingresses = async () => {
   // Send the request to backend
-  http_response = await fetch(HTTP_ENDPOINT);
+  const http_response = await fetch(HTTP_ENDPOINT);
   console.debug(http_response)
 
   // Return to user
@@ -63,9 +84,18 @@ _fetch_ingresses = async () => {
 }
 
 _display_action_validation = () => {
-  element = document.querySelector('#controls .fa-check');
-  element.classList.remove("hidden")
+  const check_element = document.querySelector('#controls .mdi-check');
+  check_element.classList.remove("hidden")
   setTimeout(() => {
-    element.classList.add("hidden")
+    check_element.classList.add("hidden")
   }, VALIDATION_CHECK_DURATION);
+}
+
+_toggle_button = (selector, status = true) => {
+  const auto_element = document.querySelector(selector);
+  if (status) {
+    auto_element.classList.add("active")
+  } else {
+    auto_element.classList.remove("active")
+  }
 }

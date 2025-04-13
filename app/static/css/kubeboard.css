@@ -21,13 +21,19 @@ h1 {
 h2 {
   font-size: 20px;
   font-weight: 900;
-  margin-bottom: 16px;
+  margin-bottom: 20px;
   text-transform: uppercase;
 }
 
 h3 {
   font-weight: 600;
   font-size: .9em;
+}
+
+h4 {
+  font-weight: normal;
+  margin: 0;
+  padding-bottom: 8px;
 }
 
 a {
@@ -38,6 +44,10 @@ a {
 
 .hidden {
   display: none;
+}
+
+.active {
+  opacity: 1 !important;
 }
 
 footer {
@@ -51,15 +61,8 @@ footer {
   display: flex;
   justify-content: center;
   align-items: center;
-}
 
-footer span {
-  margin-bottom: 10px;
-}
-
-footer .fa-heart {
-  font-size: 0.9rem;
-  padding: 0 2px 0 2px
+  padding-bottom: 10px;
 }
 
 footer a {
@@ -74,12 +77,22 @@ footer a {
 header {
   display: flex;
   align-items: center;
-  gap: 15px;
+  gap: 22px;
+  margin: 40px 0 60px 0;
 }
 
-#logo {
-  max-width: 500px;
-  margin: 50px 0
+header h1 {
+  padding: 0;
+  margin: 0
+}
+
+header img {
+  max-width: 80px;
+}
+
+header #logo {
+  padding-right: 18px;
+  border-right: 2px solid white;
 }
 
 #app_grid {
@@ -98,26 +111,31 @@ header {
   align-items: center;
 
   width: 300px;
-  gap: 8px;
+  gap: 10px;
 
   padding: 4px 4px 8px 4px;
-  margin-bottom: 10px;
   text-transform: uppercase;
 
   border-radius: 4px;
   transition: all .1s;
+
+  background-color: rgba(0, 0, 0, .2);
 }
 
 .app_item:hover,
 .app_item:active,
 .app_item:focus {
-  background-color: rgba(0, 0, 0, .4);
+  background-color: rgba(0, 0, 0, .5);
 }
 
 .app_item_icon {
   width: 35px;
   height: 35px;
   font-size: 35px;
+}
+
+.app_item_details {
+  padding-top: 4px;
 }
 
 .app_item_details h3 {
@@ -131,17 +149,6 @@ header {
   font-weight: 400;
 }
 
-#menu {
-  display: flex;
-  justify-content: flex-start;
-  align-items: baseline;
-  gap: 22px;
-}
-
-#autoRefreshCheckbox {
-  margin-right: 2px;
-}
-
 #controls {
   display: inline-block;
   padding: 4px;
@@ -149,28 +156,31 @@ header {
   top: 9px;
   right: 9px;
 
+  opacity: .5;
+
   display: flex;
+  justify-content: flex-end;
+  align-items: center;
   gap: 10px;
 }
 
-#controls .fa-check {
-  color: green;
+#controls .mdi {
   font-size: 1.5rem;
+  transition: all .3s;
+}
+
+#controls #lastRefresh {
+  font-size: 0.8rem;
+}
+
+#controls .mdi:hover,
+#controls .mdi:active,
+#controls .mdi:focus {
+  opacity: 1;
+}
+
+#controls .mdi-check {
   color: green;
+  opacity: 1;
 }
 
-#refresh {
-  border-radius: 999px;
-  font-size: 1.5rem;
-  opacity: 0.3;
-  background-color: rgba(0, 0, 0, .05);
-
-  transition: all .1s;
-}
-
-#refresh:hover,
-#refresh:active,
-#refresh:active {
-  background-color: rgba(6, 82, 221, .1);
-  opacity: 0.5;
-}

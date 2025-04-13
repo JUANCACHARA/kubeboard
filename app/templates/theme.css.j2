@@ -4,7 +4,7 @@ body {
 }
 
 body {
-  backdrop-filter: blur(10px) brightness(55%);
+  backdrop-filter: {{ background_effects }}
 }
 
 .app_item_details span,
@@ -12,8 +12,9 @@ footer a {
   color: {{ primary_color }};
 }
 
-.fa-heart {
-  color: red;
+.active,
+header span {
+  color: {{ primary_color }};
 }
 
 html {

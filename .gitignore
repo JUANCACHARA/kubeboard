@@ -8,4 +8,4 @@ dist/
 htmlcov/
 .tox/
 docs/_build/
-kubeboard.values.yaml
+*.values.yaml

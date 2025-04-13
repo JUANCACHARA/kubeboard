@@ -9,8 +9,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" type= "text/css" href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap">
+  <link rel="stylesheet" type= "text/css" href="https://cdn.jsdelivr.net/npm/@mdi/font@7.4.47/css/materialdesignicons.min.css">
   <link rel="stylesheet" type= "text/css" href="{{ url_for('static', filename='css/modern-normalize.min.css') }}">
-  <link rel="stylesheet" type= "text/css" href="{{ url_for('static', filename='css/fork-awesome.min.css') }}">
   <link rel="stylesheet" type= "text/css" href="{{ url_for('static', filename='css/kubeboard.css') }}">
   <link rel="stylesheet" type= "text/css" href="{{ url_for('static', filename='css/kubeboard-theme.css') }}">
 </head>
@@ -18,31 +18,33 @@
 <body>
   <div id="root">
     <header>
-      <img src="{{ url_for('static', filename='img/logo.png') }}" alt="Logo de KubeBoard" id="logo" />
-      <h1 class="hidden">KubeBoard</h1>
+      <div id="logo">
+        <img src="{{ url_for('static', filename='img/logo.webp') }}" alt="Logo de KubeBoard" />
+      </div>
+      <div>
+        <h1>
+          <span>K</span>ube<span>B</span>oard
+        </h1>
+        <h4>{{ subtitle }}</h4>
+      </div>
     </header>
     <section>
-      <div id="menu">
-        <h2>Applications</h2>
-        <div>
-          <input type="checkbox" id="autoRefreshCheckbox" name="autoRefresh" value="true" />
-          <label for="autoRefreshCheckbox">Automatic refresh</label>
-        </div>
-      </div>
+      <h2>Applications</h2>
       <div id="app_grid"></div>
     </section>
   </div>
 
   <div id="controls">
-    <i class="fa fa-check hidden"></i>
-    <a id="refresh">
-      <i class="fa fa-refresh"></i>
-    </a>
+    <span id="lastRefresh"></span>
+    <a id="automaticRefresh" class="mdi mdi-refresh-auto"></a>
+    <span class="mdi mdi-check hidden"></span>
+    <a id="refresh" class="mdi mdi-cloud-refresh"></a>
   </div>
 
   <footer>
-    <span>Made with <i class="fa fa-heart"></i> by <a target="_blank" href="https://hugo.chupin.xyz">Hugo
-        CHUPIN</a></span>
+    <div>
+      <a href="https://github.com/ByTheHugo/kubeboard">GitHub</a> - Apache License 2.0
+    </div>
   </footer>
 
   <script defer type="text/javascript" src="{{ url_for('static', filename='js/kubeboard.js') }}"></script>

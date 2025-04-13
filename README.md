@@ -8,29 +8,32 @@ A simple web GUI for visualizing the services that are available in a _Kubernete
 
 <p align="right">(<a href="#kubeboard">back to top</a>)</p>
 
-## Customize applications
+## Customize ingresses
 
-By default, **KubeBoard** displays all `̀Ingress` using their `.metadata.name` attribute and a default icon. If you want to customize the name and/or the icon of a specific `Ingress` or even remove it from the homepage, you can use the following annotations:
+By default, **KubeBoard** displays all `Ingress` using their `.metadata.name` attribute and a default icon. If you want to customize the name and/or the icon of a specific `Ingress` or even remove it from the homepage, you can use the following annotations:
 
 | Annotation | Default value | Description |
 |---|---|---|
 | **kubeboard.xyz/show** | `true` | Whether or not to display the `Ingress` within **KubeBoard** homepage |
 | **kubeboard.xyz/name** | `<.metadata.name>` | The name of the application |
-| **kubeboard.xyz/icon** | `fa-external-link` | The icon of the application |
+| **kubeboard.xyz/icon** | `mdi-link-variant` | The icon of the application |
 
-We are currently using the **[ForkAwesome](https://forkaweso.me/Fork-Awesome/)** icon library. You can [find all available icons](https://forkaweso.me/Fork-Awesome/icons/) in its documentation.
+We are currently using the **[Pictogrammers](https://pictogrammers.com/) Material Design Icons** library. You can [find all available icons](https://pictogrammers.com/library/mdi/) in its documentation.
 
 <p align="right">(<a href="#kubeboard">back to top</a>)</p>
 
-## Customize theme
+## Customize the dashboard
 
 To facilitate the integration of **KubeBoard** in any project, some theming elements can be customized. This is done by defining the following available environment variables:
 
 | Environment variable | Default value | Description |
 |---|---|---|
+| **FLASK_APP_SUBTITLE** | `A simple web GUI to visualise the services that are available in a Kubernetes cluster.` | App subtitle |
+| **FLASK_APP_DEFAULT_ICON** | `mdi-link-variant` | Default icon to use for ingresses that don't explicitly specify one |
 | **FLASK_THEME_PRIMARY_COLOR** | `#0075ff` | The primary color (CSS `rgb()`, `rgba()`, `#hex`) |
 | **FLASK_THEME_SECONDARY_COLOR** | `#AABBC3` | The secondary color (CSS `rgb()`, `rgba()`, `#hex`) |
 | **FLASK_THEME_BACKGROUND_URL** | `../img/earth-background.jpg` | The background image to use (CSS relative path or URL) |
+| **FLASK_THEME_BACKGROUND_EFFECTS** | `blur(10px) brightness(55%)` | The background effect to add to background (CSS properties) |
 
 <p align="right">(<a href="#kubeboard">back to top</a>)</p>
 
@@ -50,10 +53,13 @@ You can set any of the previously referenced environment variables mentioned abo
 ```yaml
 # kubeboard.values.yaml
 env:
+  FLASK_APP_SUBTITLE: "A simple web GUI to visualise the services that are available in a Kubernetes cluster."
+  FLASK_APP_DEFAULT_ICON: "mdi-link-variant"
   FLASK_APP_HIDE_BY_DEFAULT: "false"
   FLASK_THEME_PRIMARY_COLOR: "#0075ff"
   FLASK_THEME_SECONDARY_COLOR: "#AABBC3"
   FLASK_THEME_BACKGROUND_URL: "../img/earth-background.jpg"
+  FLASK_THEME_BACKGROUND_EFFECTS: "blur(10px) brightness(55%)"
 ```
 
 Finally, use the following command to deploy the chart:
@@ -69,13 +75,13 @@ helm upgrade --install -n <namespace> -f kubeboard.values.yaml kubeboard ./chart
 To run **KubeBoard** locally, we recommend using _[Docker](https://www.docker.com/)_ or _[Podman](https://podman.io/)_. Note that you'll also need a valid and accessible _Kubernetes_ cluster, as you'll need to mount your local `kubeconfig` file in the appropriate container directory:
 
 ```bash
-docker run -v $HOME/.kube:/app/.kube -p 5000:5000 ghcr.io/bythehugo/kubeboard:1.0.1
+docker run -v $HOME/.kube:/app/.kube -p 5000:5000 ghcr.io/bythehugo/kubeboard:1.0.2
 ```
 
 You can set any of the previously referenced environment variables mentioned above by using the `-e`/`--env` option:
 
 ```bash
-docker run -v $HOME/.kube:/app/.kube -e FLASK_APP_HIDE_BY_DEFAULT="true" -p 5000:5000 ghcr.io/bythehugo/kubeboard:1.0.1
+docker run -v $HOME/.kube:/app/.kube -e FLASK_APP_HIDE_BY_DEFAULT="true" -p 5000:5000 ghcr.io/bythehugo/kubeboard:1.0.2
 ```
 
 <p align="right">(<a href="#kubeboard">back to top</a>)</p>

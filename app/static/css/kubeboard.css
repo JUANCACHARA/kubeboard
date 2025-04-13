@@ -108,12 +108,12 @@ header #logo {
   display: flex;
   flex-wrap: nowrap;
   flex-direction: row;
-  align-items: center;
+  align-items: stretch;
 
   width: 300px;
-  gap: 10px;
+  gap: 15px;
 
-  padding: 4px 4px 8px 4px;
+  padding: 8px;
   text-transform: uppercase;
 
   border-radius: 4px;
@@ -134,8 +134,8 @@ header #logo {
   font-size: 35px;
 }
 
-.app_item_details {
-  padding-top: 4px;
+.app_item_icon img {
+  width: 100%;
 }
 
 .app_item_details h3 {

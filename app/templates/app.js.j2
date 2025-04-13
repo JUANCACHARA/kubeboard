@@ -1,0 +1,152 @@
+const HTTP_ENDPOINT = "/config";
+const FAVICON_ENDPOINT = "/favicon"
+const AUTO_REFRESH_INTERVAL = 5000;
+const VALIDATION_CHECK_DURATION = 1500;
+const FAVICON_FETCH = {{ fetch_favicon }};
+
+let autoRefreshIntervalRef = null;
+
+// Overwrite sessionStorage methods to trigger automatic view update when updating ingresses
+const sessionStorageOriginalSetItem = sessionStorage.setItem.bind(sessionStorage);
+sessionStorage.setItem = function (key, value) {
+  sessionStorageOriginalSetItem(key, value);
+  if (key == "ingresses") {
+    _update_last_refresh();
+    _update_view();
+  }
+};
+
+// Define some usefule listeners such as refreshing the ingresses when loading the page or bind the buttons
+document.addEventListener('DOMContentLoaded', async () => {
+  refresh_ingresses().then(() => {
+    if (FAVICON_FETCH) refresh_favicon();
+  });
+
+  // ===
+  // Setup eventListeners
+  // ===
+  // > refresh button clicked
+  document.querySelector('#refresh').addEventListener("click", function () {
+    refresh_ingresses().then(() => {
+      if (FAVICON_FETCH) refresh_favicon();
+      _display_action_validation()
+    })
+  });
+
+  // > automatic refresh toggle clicked
+  document.querySelector('#automaticRefresh').addEventListener("click", function () {
+    if (!autoRefreshIntervalRef) {
+      autoRefreshIntervalRef = setInterval(() => {
+        refresh_ingresses().then(() => {
+          if (FAVICON_FETCH) refresh_favicon();
+        })
+      }, AUTO_REFRESH_INTERVAL);
+      _toggle_button_active("#automaticRefresh", true);
+
+    } else {
+      if (autoRefreshIntervalRef) {
+        clearInterval(autoRefreshIntervalRef);
+        autoRefreshIntervalRef = null;
+      }
+      _toggle_button_active("#automaticRefresh", false);
+
+    }
+  });
+}, false);
+
+refresh_ingresses = async () => {
+  // Retrieve ingresses from /config endpoint
+  const _ingresses = await _fetch_ingresses();
+
+  // Save to session storage
+  sessionStorage.setItem("ingresses", JSON.stringify(_ingresses));
+}
+
+refresh_favicon = async () => {
+  // Try to retrieve ingresses from sessionStorage
+  const _ingresses = JSON.parse(sessionStorage.getItem("ingresses"));
+
+  for (let i = 0; i < _ingresses.length; i++) {
+    try {
+      const _ingress_favicon = await _fetch_favicon(_ingresses[i].url)
+      if ("favicon" in _ingress_favicon) _ingresses[i].favicon = _ingress_favicon.favicon
+    } catch (error) {
+      if (error.toString() != "Error: 404") console.error(error);
+    }
+  }
+
+  // Save to session storage
+  sessionStorage.setItem("ingresses", JSON.stringify(_ingresses));
+}
+
+_update_view = () => {
+  // Try to retrieve ingresses from sessionStorage
+  const _ingresses = JSON.parse(sessionStorage.getItem("ingresses"));
+
+  // Reset grid
+  document.querySelector('#app_grid').innerHTML = "";
+
+  // Update DOM with retrieved configuration
+  for (let i = 0; i < _ingresses.length; i++) {
+    let _ingress_html = `<a class="app_item" href="http://${_ingresses[i].url}" target="_blank" rel="noreferrer">`
+    if (_ingresses[i].favicon) {
+      _ingress_html += `<div class="app_item_icon"><img src="${_ingresses[i].favicon}" alt="Favicon de ${_ingresses[i].name}" /></div>`
+    } else {
+      _ingress_html += `<div class="app_item_icon"><span class="mdi ${_ingresses[i].icon}" aria-hidden="true"></span></div>`
+    }
+    _ingress_html += `<div class="app_item_details">
+                        <h3>${_ingresses[i].name}</h3>
+                        <span>${_ingresses[i].url}</span>
+                      </div>
+                    </a>
+    `
+    document.querySelector('#app_grid').insertAdjacentHTML('beforeend', _ingress_html);
+  }
+}
+
+_update_last_refresh = () => {
+  document.querySelector('#lastRefresh').innerHTML = `<strong>Last refresh:</strong> ${new Date().toUTCString()}`;
+}
+
+_fetch_favicon = async (hostname) => {
+  // Build URL parameters
+  const params = new URLSearchParams();
+  params.append("hostname", hostname);
+
+  // Send the request to backend
+  const http_response = await fetch(`${FAVICON_ENDPOINT}?${params}`);
+
+  // Return to user
+  if (!http_response.ok) {
+    throw new Error(http_response.status);
+  }
+  return await http_response.json();
+}
+
+_fetch_ingresses = async () => {
+  // Send the request to backend
+  const http_response = await fetch(HTTP_ENDPOINT);
+
+  // Return to user
+  if (!http_response.ok) {
+    throw new Error(http_response.status);
+  }
+  return await http_response.json();
+}
+
+_display_action_validation = () => {
+  const check_element = document.querySelector('#controls .mdi-check');
+  check_element.classList.remove("hidden")
+  setTimeout(() => {
+    check_element.classList.add("hidden")
+  }, VALIDATION_CHECK_DURATION);
+}
+
+_toggle_button_active = (selector, status = true) => {
+  const auto_element = document.querySelector(selector);
+  if (status) {
+    auto_element.classList.add("active")
+  } else {
+    auto_element.classList.remove("active")
+  }
+}

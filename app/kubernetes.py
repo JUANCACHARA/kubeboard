@@ -2,14 +2,16 @@ from logging import Logger
 from os import getenv
 from kubernetes import client, config
 from typing import List, Dict
+import favicon
 
 
 def _k8s_filter_annotations(annotations: Dict, prefix: str) -> Dict:
-  annotations_cleaned = {}
-  for key, value in annotations.items():
-      if key.startswith(prefix):
-        annotations_cleaned[key] = value
-  return annotations_cleaned
+    annotations_cleaned = {}
+    for key, value in annotations.items():
+        if key.startswith(prefix):
+            annotations_cleaned[key] = value
+    return annotations_cleaned
+
 
 def k8s_load_config(logger: Logger) -> None:
     if getenv("KUBERNETES_SERVICE_HOST"):
@@ -19,7 +21,14 @@ def k8s_load_config(logger: Logger) -> None:
         logger.debug("Loading Kubernetes configuration from kubeconfig")
         config.load_kube_config()
 
-def k8s_get_ingresses(logger: Logger, prefix: str, default_icon: str, hide_by_default=False, namespace=None) -> List[Dict]:
+
+def k8s_get_ingresses(
+    logger: Logger,
+    prefix: str,
+    default_icon: str,
+    hide_by_default=False,
+    namespace=None,
+) -> List[Dict]:
     # Use appropriated Kubernetes API
     networking_v1_api = client.NetworkingV1Api()
 
@@ -27,7 +36,9 @@ def k8s_get_ingresses(logger: Logger, prefix: str, default_icon: str, hide_by_de
     ingresses_raw_list = []
     if namespace:
         logger.debug("Retrieving ingresses from namespace {}".format(namespace))
-        ingresses_raw_list = networking_v1_api.list_namespaced_ingress(namespace=namespace)
+        ingresses_raw_list = networking_v1_api.list_namespaced_ingress(
+            namespace=namespace
+        )
     else:
         logger.debug("Retrieving ingresses from all namespaces")
         ingresses_raw_list = networking_v1_api.list_ingress_for_all_namespaces()
@@ -48,7 +59,10 @@ def k8s_get_ingresses(logger: Logger, prefix: str, default_icon: str, hide_by_de
         if hide_by_default and not f"{prefix}/show" in annotations_cleaned:
             continue
         # If the "show" annotation isn't true , we skip the ingress
-        if f"{prefix}/show" in annotations_cleaned and annotations_cleaned[f"{prefix}/show"] == "false":
+        if (
+            f"{prefix}/show" in annotations_cleaned
+            and annotations_cleaned[f"{prefix}/show"] == "false"
+        ):
             continue
 
         # Append formatted ingress object

@@ -30,6 +30,8 @@ To facilitate the integration of **KubeBoard** in any project, some theming elem
 |---|---|---|
 | **FLASK_APP_SUBTITLE** | `A simple web GUI to visualise the services that are available in a Kubernetes cluster.` | App subtitle |
 | **FLASK_APP_DEFAULT_ICON** | `mdi-link-variant` | Default icon to use for ingresses that don't explicitly specify one |
+| **FLASK_APP_HIDE_BY_DEFAULT** | `false` | Whether or not to hide all ingresses by default (requires explicit addition of the `kubeboard.xyz/show` annotation) |
+| **FLASK_APP_FETCH_FAVICON** | `false` | Whether or not to replace the entry icons with the service favicon |
 | **FLASK_THEME_PRIMARY_COLOR** | `#0075ff` | The primary color (CSS `rgb()`, `rgba()`, `#hex`) |
 | **FLASK_THEME_SECONDARY_COLOR** | `#AABBC3` | The secondary color (CSS `rgb()`, `rgba()`, `#hex`) |
 | **FLASK_THEME_BACKGROUND_URL** | `../img/earth-background.jpg` | The background image to use (CSS relative path or URL) |
@@ -56,6 +58,7 @@ env:
   FLASK_APP_SUBTITLE: "A simple web GUI to visualise the services that are available in a Kubernetes cluster."
   FLASK_APP_DEFAULT_ICON: "mdi-link-variant"
   FLASK_APP_HIDE_BY_DEFAULT: "false"
+  FLASK_APP_FETCH_FAVICON: "false"
   FLASK_THEME_PRIMARY_COLOR: "#0075ff"
   FLASK_THEME_SECONDARY_COLOR: "#AABBC3"
   FLASK_THEME_BACKGROUND_URL: "../img/earth-background.jpg"
@@ -75,13 +78,13 @@ helm upgrade --install -n <namespace> -f kubeboard.values.yaml kubeboard ./chart
 To run **KubeBoard** locally, we recommend using _[Docker](https://www.docker.com/)_ or _[Podman](https://podman.io/)_. Note that you'll also need a valid and accessible _Kubernetes_ cluster, as you'll need to mount your local `kubeconfig` file in the appropriate container directory:
 
 ```bash
-docker run -v $HOME/.kube:/app/.kube -p 5000:5000 ghcr.io/bythehugo/kubeboard:1.0.2
+docker run -v $HOME/.kube:/app/.kube -p 5000:5000 ghcr.io/bythehugo/kubeboard:1.1.0
 ```
 
 You can set any of the previously referenced environment variables mentioned above by using the `-e`/`--env` option:
 
 ```bash
-docker run -v $HOME/.kube:/app/.kube -e FLASK_APP_HIDE_BY_DEFAULT="true" -p 5000:5000 ghcr.io/bythehugo/kubeboard:1.0.2
+docker run -v $HOME/.kube:/app/.kube -e FLASK_APP_HIDE_BY_DEFAULT="true" -p 5000:5000 ghcr.io/bythehugo/kubeboard:1.1.0
 ```
 
 <p align="right">(<a href="#kubeboard">back to top</a>)</p>

@@ -10,3 +10,6 @@ htmlcov/
 docs/_build/
 *.values.yaml
 .tmp
+.pytest_cache
+results
+*.xml

@@ -2,7 +2,6 @@ from logging import Logger
 from os import getenv
 from kubernetes import client, config
 from typing import List, Dict
-import favicon
 
 
 def _k8s_filter_annotations(annotations: Dict, prefix: str) -> Dict:

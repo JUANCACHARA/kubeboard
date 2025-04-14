@@ -1,0 +1,4 @@
+pytest-error-for-skips
+pytest-html
+pytest
+python-dotenv

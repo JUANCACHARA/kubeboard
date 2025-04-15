@@ -8,7 +8,7 @@ FLASK_K8S_ANNOTATION_PREFIX="kubeboard.xyz"
 FLASK_APP_SUBTITLE="A simple web GUI to visualise the services that are available in a Kubernetes cluster."
 FLASK_APP_DEFAULT_ICON="mdi-link-variant" # See https://pictogrammers.com/library/mdi/
 FLASK_APP_HIDE_BY_DEFAULT="false"
-FLASK_APP_FETCH_FAVICON="false"
+FLASK_APP_FETCH_FAVICON="false" # Please note that the SPA applications could return an incorrect favicon (library issue)
 
 FLASK_THEME_PRIMARY_COLOR="#0075ff"
 FLASK_THEME_SECONDARY_COLOR="#AABBC3"

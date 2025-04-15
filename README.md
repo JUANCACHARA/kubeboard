@@ -1,6 +1,5 @@
-<!-- markdownlint-disable MD033 MD041 -->
-
 # KubeBoard
+<!-- markdownlint-disable MD033 MD024 -->
 
 A simple web GUI for visualizing the services that are available in a _Kubernetes_ cluster. Written in Python using the [Flask framework](https://flask.palletsprojects.com/en/stable/), it allows you to automatically populate a custom homepage/dashboard based on all the ingresses you've created. Basic customization is also implemented, such as the icon and/or title of each deployed application, and even the theme of the dashboard. Automatic and periodic updating of applications is implemented to make presentations more dynamic.
 
@@ -36,6 +35,10 @@ To facilitate the integration of **KubeBoard** in any project, some theming elem
 | **FLASK_THEME_SECONDARY_COLOR** | `#AABBC3` | The secondary color (CSS `rgb()`, `rgba()`, `#hex`) |
 | **FLASK_THEME_BACKGROUND_URL** | `../img/earth-background.jpg` | The background image to use (CSS relative path or URL) |
 | **FLASK_THEME_BACKGROUND_EFFECTS** | `blur(10px) brightness(55%)` | The background effect to add to background (CSS properties) |
+
+### Favicon fetch limitation
+
+The favicon retrieval relies on the _Python_ **[favicon](https://pypi.org/project/favicon/)** library. Some issues have been found when fetching favicons in a _Single-Page Application_ that could result in the wrong icon being fetched.
 
 <p align="right">(<a href="#kubeboard">back to top</a>)</p>
 
@@ -113,19 +116,83 @@ In order to get a local copy up and running, you'll need to follow these simple 
     git clone https://github.com/ByTheHugo/kubeboard.git
     ```
 
-2. Install the Python packages using `pip`:
+2. Create a new _Python_ virtual environment and source it:
+
+    ```bash
+    # Create a new virtual environment
+    python3 -m venv venv
+
+    # Activate the virtual environment
+    source venv/bin/activate
+    ```
+
+3. Install the Python packages using `pip`:
 
     ```bash
     python3 -m pip install -r requirements.txt
     ```
 
-3. Customize environment variables by editing the `.flaskenv` file _(if needed)_
+### Run the application
 
-4. Run the application:
+1. Customize environment variables by editing the `.flaskenv` file _(if needed)_
+
+2. Start the _Flask_ application:
 
     ```bash
     python3 -m flask run
     ```
+
+<p align="right">(<a href="#kubeboard">back to top</a>)</p>
+
+## How to run tests
+
+In order to run the **[pytest](https://docs.pytest.org/en/stable/#)** tests you'll need to follow these simple steps.
+
+### Prerequisites
+
+If you don't have a _Python_ virtual environment yet, create one. Otherwise, source it
+
+```bash
+python3 -m venv venv
+source venv/bin/activate
+```
+
+Then install the required _Python_ dependencies from both the application and tests using the following command:
+
+```bash
+python3 -m pip install -r requirements.txt -r tests/requirements.txt
+```
+
+### Run the tests
+
+You can run the `pytest` tests using with following command:
+
+```bash
+python3 -m pytest
+```
+
+#### Generate the code coverage
+
+You can use the following options to generate the **[coverage report](https://pypi.org/project/pytest-cov/)**:
+
+```bash
+python3 -m pytest --cov --cov-report html
+```
+
+#### Generate the code profile
+
+You must install the **[Graphviz](https://graphviz.org/)** package to generate the _Python_ profile in SVG:
+
+```bash
+# Package for Debian-based systems
+sudo apt install graphviz
+```
+
+You can use the following options to generate the **[_Python_ profile](https://pypi.org/project/pytest-profiling/)**:
+
+```bash
+python3 -m pytest --profile --profile-svg
+```
 
 <p align="right">(<a href="#kubeboard">back to top</a>)</p>
 
@@ -137,7 +204,7 @@ Distributed under the Apache 2.0 License. See `LICENSE` for more information.
 
 ## Contact
 
-Hugo CHUPIN - [@hugo.chupin.xyz](https://bsky.app/profile/hugo.chupin.xyz) - <hugo@chupin.xyz>
+Hugo CHUPIN - <hugo@chupin.xyz> - [hugo.chupin.xyz](https://hugo.chupin.xyz) - [@hugo.chupin.xyz](https://bsky.app/profile/hugo.chupin.xyz)
 
 Project link: [https://github.com/ByTheHugo/kubeboard](https://github.com/ByTheHugo/kubeboard)
 

@@ -1,6 +1,7 @@
 stages:
   - security
   - lint
+  - tests
   - build
   - cve
   - publish
@@ -24,12 +25,15 @@ variables:
   GITLEAKS_VERSION: "latest"
   HELM_VERSION: "latest"
   SKOPEO_VERSION: "latest"
+  ALPINE_VERSION: "3"
 
   TRIVY_SEVERITY: HIGH,CRITICAL
 
   IMAGE_NAME: "${REGISTRY_URL}/${CI_PROJECT_NAMESPACE}/${CI_PROJECT_NAME}"
 
   IGNORE_TRIVY_CVE: false
+
+  RESULTS_FOLDER: results
 
 include:
   - local: .gitlab/build.yml

